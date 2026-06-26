@@ -1,0 +1,1 @@
+/usr/bin/cc -Wl,--dependency-file=CMakeFiles/phys.dir/link.d CMakeFiles/phys.dir/src/main.c.o -o phys  -lraylib -lm
