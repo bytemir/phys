@@ -85,12 +85,12 @@ clean: CMakeFiles/phys.dir/clean
 CMakeFiles/phys.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/emir/Desktop/phys/build/CMakeFiles --progress-num=1,2 "Built target phys"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/emir/Desktop/phys/build/CMakeFiles --progress-num=1,2,3 "Built target phys"
 .PHONY : CMakeFiles/phys.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/phys.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/emir/Desktop/phys/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/emir/Desktop/phys/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/phys.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/emir/Desktop/phys/build/CMakeFiles 0
 .PHONY : CMakeFiles/phys.dir/rule
@@ -102,7 +102,7 @@ phys: CMakeFiles/phys.dir/rule
 # codegen rule for target.
 CMakeFiles/phys.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/emir/Desktop/phys/build/CMakeFiles --progress-num=1,2 "Finished codegen for target phys"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/emir/Desktop/phys/build/CMakeFiles --progress-num=1,2,3 "Finished codegen for target phys"
 .PHONY : CMakeFiles/phys.dir/codegen
 
 # clean rule for target.

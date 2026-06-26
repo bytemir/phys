@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/phys.dir/link.d"
+  "CMakeFiles/phys.dir/src/hud.c.o"
+  "CMakeFiles/phys.dir/src/hud.c.o.d"
   "CMakeFiles/phys.dir/src/main.c.o"
   "CMakeFiles/phys.dir/src/main.c.o.d"
   "phys"

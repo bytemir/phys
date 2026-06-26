@@ -2,6 +2,7 @@ phys: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/Scrt1.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o \
+  CMakeFiles/phys.dir/src/hud.c.o \
   CMakeFiles/phys.dir/src/main.c.o \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/libraylib.so \
   /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/libm.so \
@@ -51,6 +52,8 @@ phys: \
 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/../../../../lib/crti.o:
 
 /usr/lib/gcc/x86_64-pc-linux-gnu/16.1.1/crtbeginS.o:
+
+CMakeFiles/phys.dir/src/hud.c.o:
 
 CMakeFiles/phys.dir/src/main.c.o:
 

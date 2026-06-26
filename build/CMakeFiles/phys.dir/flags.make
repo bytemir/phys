@@ -4,7 +4,7 @@
 # compile C with /usr/bin/cc
 C_DEFINES = 
 
-C_INCLUDES = 
+C_INCLUDES = -I/home/emir/.local/share/vcpkg/installed/x64-linux/include
 
 C_FLAGS = -std=gnu11
 

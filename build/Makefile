@@ -129,6 +129,30 @@ phys/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/build
 .PHONY : phys/fast
 
+src/hud.o: src/hud.c.o
+.PHONY : src/hud.o
+
+# target to build an object file
+src/hud.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/src/hud.c.o
+.PHONY : src/hud.c.o
+
+src/hud.i: src/hud.c.i
+.PHONY : src/hud.i
+
+# target to preprocess a source file
+src/hud.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/src/hud.c.i
+.PHONY : src/hud.c.i
+
+src/hud.s: src/hud.c.s
+.PHONY : src/hud.s
+
+# target to generate assembly for a file
+src/hud.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/phys.dir/build.make CMakeFiles/phys.dir/src/hud.c.s
+.PHONY : src/hud.c.s
+
 src/main.o: src/main.c.o
 .PHONY : src/main.o
 
@@ -162,6 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... phys"
+	@echo "... src/hud.o"
+	@echo "... src/hud.i"
+	@echo "... src/hud.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
