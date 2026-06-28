@@ -8,10 +8,9 @@
 #define PROPERTIES_SEP 3.5f
 #define COLOR_PANEL    CLITERAL(Color){ 43, 43, 43, 255 }      
 #define COLOR_TEXT     CLITERAL(Color){ 187, 187, 187, 255 }  
-#define COLOR_TEXT_GREEN     CLITERAL(Color){ 0, 255, 0, 255 }  
 
-                                 // Dim  Mass  isBall  Gravity Drag
-static HudProperties properties = { 0.0f, 0.0f, false, false, false};
+                                 // Dim   Mass   Ss   sD    Gravity Drag  isBall isSpring
+static HudProperties properties = { 0.0f, 0.0f, 0.0f, 0.0f, false, false, false, false};
 
 HudProperties *GetHudProperties(void) {
     return &properties;
@@ -19,11 +18,10 @@ HudProperties *GetHudProperties(void) {
 
 void RenderHud(void) {
 
-    DrawText(TextFormat("FPS: %i", GetFPS()),0, 0, FONT_SIZE, COLOR_TEXT);
-
     DrawRectangle(0.75f*SCREEN_WIDTH, 0, SCREEN_WIDTH - (0.75f * SCREEN_WIDTH), GetScreenHeight(), COLOR_PANEL);
     DrawText("Object Type: ",0.75f*SCREEN_WIDTH, 0, FONT_SIZE, COLOR_TEXT);
-    GuiToggle((Rectangle){ 0.75f*SCREEN_WIDTH, 25, 120, FONT_SIZE}, TextFormat("Ball"), &properties.ballMenuEnabled);
+    GuiToggle((Rectangle){ 0.775f*SCREEN_WIDTH, 25, 120, FONT_SIZE}, TextFormat("Ball"), &properties.ballMenuEnabled);
+    GuiToggle((Rectangle){ 0.775f*SCREEN_WIDTH+120, 25, 120, FONT_SIZE}, TextFormat("Spring"), &properties.springMenuEnabled);
 
     if (properties.ballMenuEnabled) {
         DrawText("Properties: ",0.75f*SCREEN_WIDTH, 0.25f*SCREEN_HEIGHT, FONT_SIZE, COLOR_TEXT);
@@ -32,5 +30,9 @@ void RenderHud(void) {
 
         GuiCheckBox((Rectangle){ 0.75f*SCREEN_WIDTH + FONT_SIZE, 0.25f*SCREEN_HEIGHT+(FONT_SIZE*3)+PROPERTIES_SEP, 20, 20}, "Gravity Enabled", &properties.isGravity);
         GuiCheckBox((Rectangle){ 0.75f*SCREEN_WIDTH + FONT_SIZE, 0.25f*SCREEN_HEIGHT+(FONT_SIZE*4)+PROPERTIES_SEP, 20, 20}, "Drag Enabled", &properties.isDrag);
+    } else if (properties.springMenuEnabled) {
+        DrawText("Properties: ",0.75f*SCREEN_WIDTH, 0.25f*SCREEN_HEIGHT, FONT_SIZE, COLOR_TEXT);
+        GuiSliderBar((Rectangle){ 0.775f*SCREEN_WIDTH + 2.85f*FONT_SIZE, 0.25f*SCREEN_HEIGHT+(FONT_SIZE*2)+PROPERTIES_SEP, 120, FONT_SIZE }, "Stiffness [N/m]", TextFormat("%.2f", properties.springStiffness), &properties.springStiffness, 0, 100);
+        GuiSliderBar((Rectangle){ 0.775f*SCREEN_WIDTH + 2.85f*FONT_SIZE, 0.25f*SCREEN_HEIGHT+(FONT_SIZE*3)+PROPERTIES_SEP, 120, FONT_SIZE }, "Damping [kg]", TextFormat("%.2f", properties.springDamping), &properties.springDamping, 0, 100);
     }
 }
