@@ -10,6 +10,7 @@ typedef struct {
 
     bool ballMenuEnabled;
     bool springMenuEnabled;
+    bool rampMenuEnabled;
     
 } HudProperties;
 

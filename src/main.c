@@ -40,6 +40,13 @@ typedef struct {
 
 
 typedef struct {
+    Vector2 PositionA;
+    Vector2 PositionB;
+} Ramp;
+
+
+
+typedef struct {
     Vector2 PositionMap[MAX_OBJECTS];
     Vector2 VelocityMap[MAX_OBJECTS];
     Vector2 ForceMap[MAX_OBJECTS];
@@ -55,13 +62,27 @@ typedef struct {
     Spring SpringMap[MAX_OBJECTS];
     int num_springs;
 
+    Ramp RampMap[MAX_OBJECTS];
+    int num_ramps;
 
 } Scene;
 
 static Scene engineScene;
 static int springCreationIndex = 0;
+static int rampCreationIndex = 0;
 
 void RenderScene(void) {
+
+    if (rampCreationIndex == 1) {
+        DrawCircleV(engineScene.RampMap[engineScene.num_ramps].PositionA,3.0f,OBJECT_COLOR);
+        DrawLineEx(engineScene.RampMap[engineScene.num_ramps].PositionA, GetMousePosition(),3.0f, OBJECT_COLOR);
+    }
+
+    for (int ramp_index = 0; ramp_index < engineScene.num_ramps; ramp_index++) {
+        DrawLineEx(engineScene.RampMap[ramp_index].PositionA, engineScene.RampMap[ramp_index].PositionB,3.0f, OBJECT_COLOR);
+        DrawCircleV(engineScene.RampMap[ramp_index].PositionA, 3.0f, OBJECT_COLOR);
+        DrawCircleV(engineScene.RampMap[ramp_index].PositionB, 3.0f, OBJECT_COLOR);
+    }  
     
     if (springCreationIndex == 1) {
         DrawCircleV(engineScene.SpringMap[engineScene.num_springs].PositionA,ANCHOR_SIZE,ANCHOR_COLOR);
@@ -202,7 +223,46 @@ void UpdateScene(float deltaTime) {
                 engineScene.ForceMap[i].y += ny * magnitudePushForce;
             }
         }
+        for (int r = 0; r < engineScene.num_ramps; r++) {
+            Vector2 position1 = engineScene.RampMap[r].PositionA;
+            Vector2 position2 = engineScene.RampMap[r].PositionB;
 
+            float deltaX = position2.x - position1.x;
+            float deltaY = position2.y - position1.y;
+            float lengthSquared = deltaX * deltaX + deltaY * deltaY;
+
+            if (lengthSquared == 0.0f) continue;
+
+            float projection = ((ballPosition.x - position1.x) * deltaX + (ballPosition.y - position1.y) * deltaY) / lengthSquared;
+
+            if (projection < 0.0f) projection = 0.0f;
+            if (projection > 1.0f) projection = 1.0f;
+
+            Vector2 closestPoint = { position1.x + projection * deltaX, position1.y + projection * deltaY };
+
+            float dx = ballPosition.x - closestPoint.x;
+            float dy = ballPosition.y - closestPoint.y;
+            float distance = sqrtf(dx * dx + dy * dy);
+
+            if (distance < ballRadius && distance > 0.0f) {
+                float nx = dx / distance;
+                float ny = dy / distance;
+
+                float depth = ballRadius - distance;
+
+                engineScene.PositionMap[i].x += nx * depth;
+                engineScene.PositionMap[i].y += ny * depth;
+                ballPosition = engineScene.PositionMap[i];
+
+                float normalVelocity = engineScene.VelocityMap[i].x * nx + engineScene.VelocityMap[i].y * ny;
+
+                if (normalVelocity < 0.0f) {
+                    float restitution = 0.7f;
+                    engineScene.VelocityMap[i].x -= (1.0f + restitution) * normalVelocity * nx;
+                    engineScene.VelocityMap[i].y -= (1.0f + restitution) * normalVelocity * ny;
+                }
+            }
+        }
 
         if (engineScene.MassMap[i] > 0.0f) {  // Update Velocity
             Vector2 acceleration = {
@@ -283,6 +343,22 @@ int main(void)
                 }
 
             }
+            else if (hudData->rampMenuEnabled) {
+                if (rampCreationIndex == 0) {
+                    rampCreationIndex = 1;
+                    printf("Set Ramp PosA: (%.1f,%.1f)\n", MousePosition.x, MousePosition.y);
+                    engineScene.RampMap[engineScene.num_ramps] = (Ramp) {MousePosition,MousePosition};
+                }
+                else if (rampCreationIndex == 1) {
+                    rampCreationIndex = 0;
+                    printf("Set Ramp PosB: (%.1f,%.1f)\n", MousePosition.x, MousePosition.y);
+                    engineScene.RampMap[engineScene.num_ramps].PositionB = MousePosition;
+                    printf("Spawned Ramp at A: (%.1f,%.1f) -> B: (%.1f,%.1f)\n", engineScene.RampMap[engineScene.num_ramps].PositionA.x, engineScene.RampMap[engineScene.num_ramps].PositionA.y,MousePosition.x, MousePosition.y);
+                    printf("(Total: %i)", engineScene.num_ramps);
+                    engineScene.num_ramps++;
+                }
+
+            }
         }
 
         UpdateScene(deltaTime);
@@ -297,6 +373,7 @@ int main(void)
         DrawText(TextFormat("FPS: %i", GetFPS()),0, 0, FONT_SIZE, COLOR_TEXT);
         DrawText(TextFormat("Objects: %i", engineScene.num_objects),0, FONT_SIZE, FONT_SIZE, COLOR_TEXT);
         DrawText(TextFormat("Springs: %i", engineScene.num_springs),0, FONT_SIZE*2, FONT_SIZE, COLOR_TEXT);
+        DrawText(TextFormat("Ramps: %i", engineScene.num_ramps),0, FONT_SIZE*3, FONT_SIZE, COLOR_TEXT);
         RenderScene();
 
         EndBlendMode();
